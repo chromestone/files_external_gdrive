@@ -105,7 +105,26 @@ class GoogleDrive extends Flysystem {
         $about = $this->service->about->get(['fields' => 'storageQuota']);
         $storageQuota = $about->getStorageQuota();
 
-        return $storageQuota->getLimit() - $storageQuota->getUsage();
+        //return $storageQuota->getLimit() - $storageQuota->getUsage();
+        //not tested but according to Google APIs, this should not exist if "unlimited storage"
+        if ($storageQuota->getLimit()) {
+
+        	return $storageQuota->getLimit() - $storageQuota->getUsage();
+        }
+        //***THIS PORTION IS STILL BUGGY***
+        //Attempted to resolve no free space left issue (might only apply to unlimited storage)
+        //Attempted to set a custom cap of 1TB (if statement handles case when user grows his drive bigger)
+        //Seems to work for the "outer folder" but internal folders within external storage do not work
+        //and have no free space
+        //1 trillion bytes = 1 TB
+        elseif ($storageQuota->getUsage() >= 1000000000000) {
+
+        	return 0;
+        }
+        else {
+
+        	return 1000000000000 - $storageQuota->getUsage();
+        }
 	}
 
 	public function test() {

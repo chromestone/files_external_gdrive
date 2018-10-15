@@ -40,7 +40,10 @@ $(document).ready(function () {
 							backend_id: $tr.attr('class'),
 							client_id: client_id,
 							client_secret: client_secret,
+							//USE THIS IF REGULAR DOMAIN NAME
 							redirect: location.protocol + '//' + location.host + location.pathname,
+							//USE THIS IF PUBLIC IP ADDRESS (assumes xip still exists)
+							//redirect: location.protocol + '//' + location.host + 'xip.io' + location.pathname,
 							tr: $tr,
 							code: params.code || '',
 							state: params.state || ''

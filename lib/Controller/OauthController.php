@@ -79,7 +79,10 @@ class OauthController extends Controller {
 			$client = new \Google_Client();
 			$client->setClientId($clientId);
 			$client->setClientSecret($clientSecret);
+			//USE THIS IF REGULAR DOMAIN NAME
 			$client->setRedirectUri($redirect);
+			//USE THIS IF PUBLIC IP ADDRESS (assumes xip still exists)
+			//$client->setRedirectUri("https://0.0.0.0.xip.io/index.php/settings/admin/externalstorages");
 			$client->setScopes([
 		        \Google_Service_Drive::DRIVE,
 		    ]);
